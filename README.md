@@ -1,3 +1,5 @@
+https://github.com/eyyupoglu/Parser-and-Lexer
+
 # Parser-and-Lexer
 Parser, lexer, Compiler and Interpreter School Project
 
@@ -36,3 +38,8 @@ fsharpi.exe program.fsx
 ```
 
 You should be able to interact with the program and give a possible GCL input and the program will give a feedback depending on the input. If it is valid it will say "ok", if not "ko".
+
+TESTS
+```
+fsi.exe C:\Users\eyyup\source\repos\ConsoleApplication1\github\myLang\tests.fsx
+```
