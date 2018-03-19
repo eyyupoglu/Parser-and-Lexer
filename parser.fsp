@@ -1,0 +1,64 @@
+%{
+open AST
+%}
+
+%token <string> NAME
+%token <int> NUM
+%token TIMES DIV PLUS MINUS POW LPAR RPAR EOF ASSIGN SMALLER
+%token TRUE FALSE AND OR CAND COR NOT EQUALS UNEQUAL GREATER GREATEROREQUAL
+%token SMALLEROREQUAL ARROW BOX SKIP SEMI IF FI DO OD
+
+%left PLUS MINUS
+%left TIMES DIV
+%right POW
+
+%start start
+
+%type <C> start
+%type <a> a
+%type <b> b
+%type <C> c
+%type <GC> gc
+
+%%
+
+start: c EOF             { $1 }
+
+b:
+  | TRUE				{ True }
+  | FALSE				{ False }
+  | b AND b				{ And( $1, $3) }
+  | b OR b				{ Or( $1, $3) }
+  | b CAND b			{ CAnd($1, $3)}
+  | b COR b 			{ COr( $1, $3)}
+  | NOT b				{ Not($2)}
+  | a EQUALS a			{ Equals($1 , $3)}
+  | a UNEQUAL a			{ Unequal($1 , $3)}
+  | a GREATER a			{ Greater($1 , $3)}
+  | a GREATEROREQUAL a	{ GreaterOrEqual($1 , $3)}
+  | a SMALLER a			{ Smaller($1 , $3)}
+  | a SMALLEROREQUAL a	{ SmallerOrEqual($1 , $3)}
+  | LPAR b RPAR			{ Nested($2)}
+
+a:
+  | NUM				 { N($1) }
+  | NAME			 { X($1) }
+  | a PLUS a		 { Plus($1,$3) }
+  | a MINUS a		 { Minus($1,$3) }
+  | a TIMES a		 { Multiplication($1,$3) }
+  | a POW a		     { Power($1,$3) }
+  | PLUS a           { UPlus($2) }
+  | MINUS a          { UMinus($2) }
+  | LPAR a RPAR      { $2 }
+
+gc:
+
+  | b ARROW c		{ SingletonGuarded($1, $3) }
+  | gc BOX gc			{ Associate($1, $3) }
+c:
+
+  | NAME ASSIGN a	    { Assign($1, $3) }
+  | SKIP				{ Skip }
+  | c SEMI c			{ Command($1, $3) }
+  | IF gc FI			{ If($2) }
+  |	DO gc OD			{ Do($2) }
