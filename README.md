@@ -22,6 +22,15 @@ Invoke the lexer generator with
 FsLexYacc.7.0.6\build\fslex.exe lexer.fsl --unicode
 ```
 Invoke the parser generator with
-'''
+```
 FsLexYacc.7.0.6\build\fsyacc.exe parser.fsp --module parser
-'''
+```
+Invoke the program.fsx with
+
+```
+fsi.exe program.fsx
+```
+or 
+```
+fsharpi.exe program.fsx
+```
