@@ -7,7 +7,7 @@ This folder contains examples of "Simle Guarded Command Language" programs in F#
 ## Files
 
 F#/FsLexYacc
-* [CalculatorLexer.fsl](CalculatorLexer.fsl): The F# lexer for arithmetic expressions
-* [CalculatorParser.fsp](CalculatorParser.fsp): The F# parser for arithmetic expressions
-* [CalculatorTypesAST.fs](CalculatorTypesAST.fs): F# types for AST of arithmetic expressions
-* [Calculator.fsx](Calculator.fsx): The F# script for the calculator
+* [lexer.fsl](lexer.fsl): The F# lexer for GCL expressions
+* [parser.fsp](parser.fsp): The F# parser for GCL expressions
+* [AST.fs](AST.fs): F# types for AST of GCL expressions
+* [program.fsx](program.fsx): The F# script for the GCL
