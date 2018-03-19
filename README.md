@@ -19,5 +19,9 @@ This is instructions assume that you have followed the guidelines to [getting st
 Invoke the lexer generator with 
 
 ```
-mono FsLexYacc.7.0.6\build\fslex.exe CalculatorLexer.fsl --unicode
+FsLexYacc.7.0.6\build\fslex.exe lexer.fsl --unicode
 ```
+Invoke the parser generator with
+'''
+FsLexYacc.7.0.6\build\fsyacc.exe parser.fsp --module parser
+'''
