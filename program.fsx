@@ -11,16 +11,14 @@ open parser
 open lexer
 
 
-
+// Parse text into abstract syntax tree.
 let parse input =
-    // translate string into a buffer of characters
     let lexbuf = LexBuffer<char>.FromString input
-    // translate the buffer into a stream of tokens and parse them
     let res = parser.start lexer.tokenize lexbuf
-    // return the result of parsing (i.e. value of type "expr")
     res
 
-let rec compute n =
+// Take text from console and determine whether it conforms to the GCL grammar.
+let rec check =
     try
     let e = parse (Console.ReadLine())
     printfn "ok"
@@ -28,4 +26,4 @@ let rec compute n =
     with err -> printfn "ko"
 
 // Start interacting with the user
-compute 3
+check
