@@ -1,0 +1,42 @@
+
+////// 1 
+
+if 
+x != x -> x := x
+[] x > x -> y:=z; do x = x -> z:=q od
+fi
+
+////// 1 - NOT ok
+
+if 
+x != x -> x := x
+[] x > x -> y:=z do x = x -> z:=q od  // missing semicolon 
+fi
+
+////// 2
+
+y:=1;
+do x>0 -> y:=x*y;
+          x:=x-1
+od
+
+////// 2 - NOT ok
+
+y:=1;
+do x>==0 -> y:=x*y;
+          x:=x-1
+od
+
+/////// 3
+
+if x<0 -> y:=(-1*z)*z
+[] x=0 -> y:=0
+[] x>0 -> y:=z*z
+fi
+
+//////// 3 - NOT ok
+
+if x<0 -> y:=((-1*z)*z
+[] x=0 -> y:=0
+[] x>0 -> y:=z*z
+fi

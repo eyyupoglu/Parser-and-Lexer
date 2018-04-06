@@ -20,12 +20,13 @@ let parse input =
     // return the result of parsing (i.e. value of type "expr")
     res
 
-let rec compute n =
+let rec compute =
     try
     let e = parse (Console.ReadLine())
     printfn "ok"
+    
 
     with err -> printfn "ko"
 
 // Start interacting with the user
-compute 3
+compute

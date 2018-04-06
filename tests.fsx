@@ -1,5 +1,5 @@
 
-#r "FsLexYacc.Runtime.7.0.6/lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10/FsLexYacc.Runtime.dll"
+#r "myLang/FsLexYacc.Runtime.7.0.6/lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10/FsLexYacc.Runtime.dll"
 open Microsoft.FSharp.Text.Lexing
 open System
 
@@ -17,7 +17,9 @@ let parse input =
     let res = parser.start lexer.tokenize lexbuf
     res
 
-// Take text from console and determine whether it conforms to the GCL grammar.
+(* Take text from console and determine whether it conforms to
+*  the GCL grammar.
+*)
 let rec check input =
     try
     let e = parse input
@@ -25,7 +27,8 @@ let rec check input =
 
     with err -> "ko"
 
-let test1 = "ok" = (check "if  x != x -> x := x [] x > x -> y:=z; do x = x -> z:=q od fi")
+let test1 = "ok" = (check "if  x != x -> x := x [] x > x -> y:=z;
+do x = x -> z:=q od fi")
 let test2 = "ko" = check "if 
 x != x -> x := x
 [] x > x -> y:=z do x = x -> z:=q od  // missing semicolon 
@@ -35,9 +38,9 @@ let test3 = "ok" = check "y:=1;
 do x>0 -> y:=x*y;
           x:=x-1
 od"
-//the last test is failing and we are aware of that, we will improve in following weeks. 
-// we ran out of time.
-
+(* The last test is failing and we are aware of that, we will
+ * improve in following weeks. We ran out of time.
+*)
 let print = function
     | true -> printfn "SUCCESS"
     | false -> printfn "FAIL"
