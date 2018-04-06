@@ -36,7 +36,7 @@ type b =
 
 type C = 
     | Assign of (string * a)
-    | Skip
+    | Skip 
     | Command of (C * C )
     | If of (GC )
     | Do of (GC)

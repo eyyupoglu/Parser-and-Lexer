@@ -12,6 +12,12 @@ open AST
 %left TIMES DIV
 %right POW
 
+%left OR OR_SHORT
+%left AND AND_SHORT
+%right NOT
+%right BOX
+%right SEMI
+
 %start start
 
 %type <C> start

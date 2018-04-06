@@ -36,7 +36,6 @@ rule tokenize = parse
 | "[]"			{ BOX }
 | num           { NUM(Int32.Parse(LexBuffer<_>.LexemeString lexbuf)) }
 | eof            { EOF }
-| name              { let str = LexBuffer<_>.LexemeString lexbuf in NAME(str) }
 | "skip"		 {SKIP}
 | "true"		 {TRUE}
 | "false"		 {FALSE}
@@ -49,3 +48,4 @@ rule tokenize = parse
 | "!="			 {UNEQUAL}
 | ">="			 {GREATEROREQUAL}
 | "<="			 {SMALLEROREQUAL}
+| name              { let str = LexBuffer<_>.LexemeString lexbuf in NAME(str) }

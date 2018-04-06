@@ -29,9 +29,10 @@ let rec check input =
 
 let test1 = "ok" = (check "if  x != x -> x := x [] x > x -> y:=z;
 do x = x -> z:=q od fi")
+
 let test2 = "ko" = check "if 
 x != x -> x := x
-[] x > x -> y:=z do x = x -> z:=q od  // missing semicolon 
+[] x > x -> y:=z do x = x -> z:=q od 
 fi"
 
 let test3 = "ok" = check "y:=1;
