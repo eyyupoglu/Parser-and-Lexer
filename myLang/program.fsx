@@ -15,6 +15,7 @@ let parse input =
     // return the result of parsing (i.e. value of type "expr")
     res
 //input
+printfn "Put an input guarded commands"
 let text  = parse (Console.ReadLine())
 printfn "\n\n"
 //helping
@@ -90,7 +91,6 @@ and compileIf (s: int) (e: int) = function
         edge (string s) (string (newNode)) (bool b) +
         compile newNode e c 
     | Associate (gc1 ,gc2 )   -> compileIf s e gc1  + compileIf s e gc2
-
 
 
 
