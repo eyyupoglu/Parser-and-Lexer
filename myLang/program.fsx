@@ -75,7 +75,7 @@ and compileGuarded s e = function
     | SingletonGuarded (b, c) ->       
         let newNode = newStateNumber states//fresh q
         states <- addStateToStateList states newNode//returns new list of states
-        edge (string s) (string (newNode)) (bool b) + compile newNode s c 
+        edge (string s) (string (newNode)) (bool b) + compile newNode s c + edge (string s) (string e) ("!"+bool b)
 
 
 printfn "%A" text
