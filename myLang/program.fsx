@@ -23,7 +23,7 @@ let parse input =
 let text  = parse (Console.ReadLine())
 
 printfn "\n\n"
-
+//helping function for creating an edge
 let rec edge start endd act = 
     String.Format("q{0} ->  q{1} [label = \"{2}\"];\n", start, endd, act)
 
@@ -59,14 +59,12 @@ let rec bool = function
 let mutable nat =  seq []
 let mutable counter = seq []
 
+//This function finds the last element of a list
 let rec last tmp = function
     | [] -> tmp
     | a::b -> last a b 
 
-let rev (s: string) =
-    System.String(Array.rev (s.ToCharArray()))
-
-let rec compile s e seqq = function
+let rec compile (s: int)= function
     | Assign ( str, num )   ->  
         nat <- Seq.append (nat) (seq [edge (string s) (string (s+1)) ( str + ":=" + (arithm num))])
         counter <- Seq.append (counter) (seq [s])
@@ -75,29 +73,31 @@ let rec compile s e seqq = function
         nat <- Seq.append (nat) (seq [edge (string s) (string (s+1)) "skip"])
         counter <- Seq.append (counter) (seq [s])
         edge (string s) (string (s+1)) "skip"
-    | Command (c1, c2 )     ->  compile (s ) e seqq c1 + compile (s+1) e seqq c2 
-    | If (gc)               ->  compile2 (s) e seqq gc 
-    | Do (gc)               ->  compile2 (s) e seqq gc 
-and compile2 s e seqq = function
+    | Command (c1, c2 )     ->  
+        compile s c1 + compile (s+1) c2 
+    | If (gc)               ->  compile2 (s)  gc 
+    | Do (gc)               ->  compile2 (s)  gc 
+and compile2 s  = function
     | SingletonGuarded (b, c) ->
         nat <- Seq.append (nat) (seq [edge (string s) (string (s+1)) (bool b)])
         counter <- Seq.append (counter) (seq [s])
-        let lastOne = string (last (Seq.toList nat) )
+        let lastOne = string (last (Seq.toList nat))
         edge (string s) (string (s+1)) (bool b) + 
-        compile (s) e seqq c + 
-        lastOne
-         (*+ edge (compile (s) e c) *)
-    | Associate (gc1 ,gc2 )   -> compile2 (s+1) e seqq gc1  + compile2 (s+2) e seqq gc2 
+        compile (s+1)  c 
+        
+    | Associate (gc1 ,gc2 )   -> compile2 (s+1)  gc1  + compile2 (s+2)  gc2 
+
+//helping function
+let printSeq seq1 = Seq.iter (printf "%A ") seq1; printfn ""
 
 
-
-let rec repeat compile s e asd = function
-    | 0 -> ""
-    | n -> repeat compile s e asd (n-1)
-
-printfn "%A" (compile 0 0 nat text)
+printfn "%A" (compile 0  text)
 nat |> Seq.iter (fun x -> printf "%s " x)
-printfn "%A" counter
+printSeq counter
+
+
+
+
 (*let rec compute =
     try
     let e = parse (Console.ReadLine())
