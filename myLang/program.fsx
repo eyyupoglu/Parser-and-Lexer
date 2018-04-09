@@ -58,6 +58,7 @@ let rec findMax (n: int) = function
     | a::b -> findMax n b
 let newStateNumber liste = (findMax 0 liste) + 1
 let addStateToStateList stateList stateNumber = List.append stateList [stateNumber]
+
 let rec compile (s: int) (e: int) = function
     | Assign ( str, num )   ->  
         let newNode = newStateNumber states//fresh q
@@ -70,18 +71,39 @@ let rec compile (s: int) (e: int) = function
     | Command (c1, c2 )     ->  
         let newNode = newStateNumber states//fresh q 
         compile s newNode c1 + compile newNode e c2
-    | Do (gc)               ->  compileGuarded s e gc
-and compileGuarded s e = function
+    | Do (gc)               ->  compileDo s e gc
+    | If (gc)               ->  compileIf s e gc
+and compileDo (s: int) (e: int) = function
     | SingletonGuarded (b, c) ->       
+        let newNode = newStateNumber states//fresh q1
+        states <- addStateToStateList states newNode//returns new list of states
+        let newNode2 = newStateNumber states//fresh q2 for Not(bool)
+        states <- addStateToStateList states newNode2//returns new list of states
+        edge (string s) (string (newNode)) (bool b) +
+        compile newNode s c + 
+        edge (string s) (string newNode2) ("!"+bool b) 
+    | Associate (gc1 ,gc2 )   -> compileDo s e gc1  + compileDo s e gc2
+and compileIf (s: int) (e: int) = function
+   | SingletonGuarded (b, c) ->       
         let newNode = newStateNumber states//fresh q
         states <- addStateToStateList states newNode//returns new list of states
-        edge (string s) (string (newNode)) (bool b) + compile newNode s c + edge (string s) (string e) ("!"+bool b)
+        edge (string s) (string (newNode)) (bool b) +
+        compile newNode e c 
+    | Associate (gc1 ,gc2 )   -> compileIf s e gc1  + compileIf s e gc2
 
 
-printfn "%A" text
-printfn "%A" (compile 0 87 text)
-states |> List.iter (fun x -> printf "%d " x)
-printSeq states
+
+
+
+
+
+
+
+
+
+
+printfn "%A" (compile 0 999 text)
+
 
 
 
