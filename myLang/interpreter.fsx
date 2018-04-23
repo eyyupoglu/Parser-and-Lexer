@@ -48,26 +48,28 @@ let rec bool = function
 
 
 let rec interpret = function
-    | Assign ( str, a )   ->  
+    | Assign ( str, a )                     ->  
         let value = (arithm a)
         map <- (Map.remove str map)
         map <- Map.add str (value) map
         map
-    | Skip                  -> map
-    | Command (c1, c2 )     ->  
+    | Skip                                  -> map
+    | Command (c1, c2 )                     ->  
         map <- interpret c1  
         map <- interpret c2
         map
-    | Do(gc)  -> interpretGuarded gc
-    | Do(Associate(gc1 ,gc2 )) -> 
-        map<- interpret (Do(SingletonGuarded (b, c)))
-        map
-    | _ -> map
+    | Do(gc)                                -> interpretGuarded gc
+    | _                                     -> map
 and interpretGuarded = function
     | SingletonGuarded (b, c) when (bool b) -> 
         map<- interpret c
-        map<- interpret (Do(SingletonGuarded (b, c)))
+        map<- interpretGuarded (SingletonGuarded (b, c))
         map
+    | Associate(gc1 ,gc2 )                  -> 
+        map<- interpretGuarded gc1
+        map<- interpretGuarded gc2
+        map
+    | _                                     -> interpret Skip
 
 
 
