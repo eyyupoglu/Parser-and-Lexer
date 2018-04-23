@@ -59,7 +59,7 @@ let rec interpret = function
         map <- interpret c2
         map
     | Do(gc)                                -> interpretGuarded gc
-    | _                                     -> map
+    | If(gc)                                -> compileIf gc
 and interpretGuarded = function
     | SingletonGuarded (b, c) when (bool b) -> 
         map<- interpret c
@@ -70,30 +70,18 @@ and interpretGuarded = function
         map<- interpretGuarded gc2
         map
     | _                                     -> interpret Skip
-
-
-
-
-
+and compileIf = function
+    | SingletonGuarded (b, c) when (bool b) ->
+        map<- interpret c
+        map
+    | Associate(gc1 ,gc2 )                  -> 
+        map<- compileIf gc1
+        map<- compileIf gc2
+        map
+    | _                                     -> interpret Skip
 
 
 
 
 
 printfn "%A" (interpret text)
-
-
-
-
-
-(*let rec compute =
-    try
-    let e = parse (Console.ReadLine())
-    printfn "ok"
-    
-
-    with err -> printfn "ko"
-
-// Start interacting with the user
-compute
-*)
